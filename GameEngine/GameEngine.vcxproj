@@ -25,6 +25,7 @@
     <ClCompile Include="src\core\Scene.cpp" />
     <ClCompile Include="src\core\SceneManager.cpp" />
     <ClCompile Include="src\graphics\Window.cpp" />
+    <ClCompile Include="src\utils\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\utils\Debug.h" />
@@ -32,6 +33,7 @@
     <ClInclude Include="src\core\Scene.h" />
     <ClInclude Include="src\core\SceneManager.h" />
     <ClInclude Include="src\graphics\Window.h" />
+    <ClInclude Include="src\utils\Time.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\TestImage.png" />

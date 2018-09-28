@@ -6,7 +6,7 @@ int SceneManager::sceneCount_;
 int SceneManager::currentSceneIndex_;
 Scene* SceneManager::activeScene_;
 
-void SceneManager::updateCurrentScene() {
+void SceneManager::updateCurrentScene(float _deltaTime) {
 	//Debug::print("Engine :: SceneManager :: updateCurrentScene()");
 	activeScene_->update();
 }
@@ -37,7 +37,8 @@ void SceneManager::addScene(Scene* _scene) {
 }
 
 void SceneManager::loadScene(int _sceneBuildIndex){
-	Debug::print("Engine :: SceneManager :: loadScene(" + std::to_string(_sceneBuildIndex) + ")");
+	//Debug::print("Engine :: SceneManager :: loadScene(" + std::to_string(_sceneBuildIndex) + ")");
+	
 	Scene* sceneToLoad_ = getScene(_sceneBuildIndex);
 	activeScene_->unload();
 	currentSceneIndex_ = sceneToLoad_->getSceneIndex();

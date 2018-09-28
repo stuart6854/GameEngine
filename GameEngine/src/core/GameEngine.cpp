@@ -5,6 +5,7 @@
 #include "../graphics/Window.h"
 #include "SceneManager.h"
 #include "../utils/Debug.h"
+#include "../utils/Time.h"
 
 Window window_;
 
@@ -26,6 +27,7 @@ bool GameEngine::initialise() {
 	// MUST create window_ before using GLAD
 	window_.createWindow("Game Engine", 800, 600, false);
 	window_.centreOnScreen();
+	window_.showFps(true);
 
 	// load all opengl function pointers with GLAD
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -44,15 +46,26 @@ void GameEngine::start(){
 		return;
 	}
 
+	double currentFrame_ = glfwGetTime();
+	double lastFrame_ = currentFrame_;
+	float deltaTime_ = 0;
+
+
 	SceneManager::loadScene(0); //Load first scene
 
 	// Render loop
 	Debug::print("ENGINE :: Starting engine loop");
 	while (!window_.shouldClose()) {
+		//Delta Calculation
+		currentFrame_ = glfwGetTime();
+		deltaTime_ = (currentFrame_ - lastFrame_);
+		lastFrame_ = currentFrame_;
+		Time::setDeltaTime(deltaTime_);
+
 		// Input
 
 		//Update
-		SceneManager::updateCurrentScene();
+		SceneManager::updateCurrentScene(deltaTime_);
 
 		//Rendering
 		glClearColor(0.39f, 0.58f, 0.93f, 1.0f); // Cornflour Blue

@@ -1,4 +1,6 @@
 #include "Window.h"
+#include "../utils/Time.h"
+#include <string>
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *_window);
@@ -39,9 +41,12 @@ void Window::createWindow(std::string _title, int _width, int _height, bool _ful
 
 void Window::update() {
 	// Check and call events and swap buffers
+	if (showFps_) glfwSetWindowTitle(window_, (title_ + " | " + std::to_string(Time::deltaTime()) + "ms" + " | " + std::to_string(Time::fps()) + "fps").c_str());
 	glfwSwapBuffers(window_);
 	glfwPollEvents();
 }
+
+void Window::destroy() {}
 
 void Window::centreOnScreen() {
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -54,8 +59,14 @@ void Window::setVisible(bool _visible) {
 	else glfwHideWindow(window_);
 }
 
-void Window::setTitle(std::string _title) {
-	glfwSetWindowTitle(window_, title_.c_str());
+void Window::setTitle(const std::string& _title) {
+	title_ = _title;
+	glfwSetWindowTitle(window_, _title.c_str());
+}
+
+void Window::showFps(const bool _showFps) {
+	showFps_ = _showFps;
+	setTitle(title_);
 }
 
 bool Window::shouldClose() {

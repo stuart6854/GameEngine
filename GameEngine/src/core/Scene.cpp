@@ -9,9 +9,7 @@ int Scene::getSceneIndex() const {
 	return sceneIndex_;
 }
 
-void Scene::update() {
-	Debug::print("test");
-}
+void Scene::update() {}
 
 void Scene::render() {}
 

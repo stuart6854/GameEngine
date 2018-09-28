@@ -11,7 +11,7 @@ private:
 	static int currentSceneIndex_;
 	static Scene* activeScene_;
 
-	static void updateCurrentScene();
+	static void updateCurrentScene(float _deltaTime);
 	static void renderCurrentScene();
 
 	friend class GameEngine;

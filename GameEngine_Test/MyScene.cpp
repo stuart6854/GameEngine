@@ -4,7 +4,7 @@
 
 
 void MyScene::update() {
-	std::cout << "MyScene update" << std::endl;
+
 }
 
 void MyScene::render() {

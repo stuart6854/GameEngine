@@ -12,7 +12,8 @@ public:
 
 	void centreOnScreen();
 	void setVisible(bool _visible);
-	void setTitle(std::string _title);
+	void setTitle(const std::string& _title);
+	void showFps(bool _showFps);
 
 	bool shouldClose();
 
@@ -21,7 +22,8 @@ private:
 	GLFWwindow* window_;
 	std::string title_;
 	int width_, height_;
-	bool fullscreen_;
+	bool fullscreen_ = false;
+	bool showFps_ = false;
 
 	void initialise();
 

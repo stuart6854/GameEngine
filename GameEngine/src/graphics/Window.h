@@ -17,6 +17,7 @@ public:
 
 	bool shouldClose();
 
+	GLFWwindow* getGLFWWindow() { return window_; }
 
 private:
 	GLFWwindow* window_;

@@ -1,7 +1,7 @@
-#include "../GameEngine/src/core/GameEngine.h"
 #include "MyScene.h"
-#include "core/SceneManager.h"
 #include <iostream>
+#include "../src/core/SceneManager.h"
+#include "../src/core/GameEngine.h"
 
 int main() {
 	MyScene myScene_;

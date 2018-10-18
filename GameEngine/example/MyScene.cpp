@@ -1,7 +1,8 @@
 #include "MyScene.h"
-#include <iostream>
 
+void MyScene::init() {
 
+}
 
 void MyScene::update() {
 

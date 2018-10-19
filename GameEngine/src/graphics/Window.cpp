@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "../utils/Time.h"
 #include <string>
+#include <GLFW/glfw3.h>
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *_window);

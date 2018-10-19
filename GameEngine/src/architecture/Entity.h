@@ -12,6 +12,7 @@ public:
 		_output << "Entity(" << _entity.id << ")";
 		return _output;
 	}
+
 	bool operator==(const Entity& _other) {
 		return (id == _other.id);
 	}

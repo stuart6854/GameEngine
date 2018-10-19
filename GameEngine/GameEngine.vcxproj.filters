@@ -66,6 +66,12 @@
     <ClCompile Include="example\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\maths\Math.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\architecture\Component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\SceneManager.h">
@@ -131,12 +137,6 @@
     <ClInclude Include="src\architecture\System.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\architecture\components\Position.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\architecture\components\Velocity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\architecture\EntityHandle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -144,6 +144,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="example\MyScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\Math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\architecture\components\Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\IDebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

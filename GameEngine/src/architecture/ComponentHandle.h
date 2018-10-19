@@ -1,20 +1,23 @@
 ﻿#pragma once
 
 template<typename ComponentType>
-struct ComponentHandle {
-	
-	//Entity entity;
-	//ComponentType* component;
-	//ComponentManager<ComponentType>* mgr;
+class ComponentManager;
 
-	/*ComponentHandle(ComponentManager<ComponentType>* _mgr, Entity _e, ComponentType* _comp) {
+template<typename ComponentType>
+struct ComponentHandle {
+
+	Entity entity;
+	ComponentType* component;
+	ComponentManager<ComponentType>* mgr;
+
+	ComponentHandle(ComponentManager<ComponentType>* _mgr, Entity _e, ComponentType* _comp) {
 		entity = _e;
 		mgr = _mgr;
 		component = _comp;
-	}*/
+	}
 
-	/*void destroy() {
+	void destroy() {
 		mgr->removeComponent(entity);
-	}*/
+	}
 
 };

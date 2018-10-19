@@ -9,6 +9,12 @@ public:
 	int y() { return y_; }
 	int z() { return z_; }
 
+	void set(const float _arr[]) {
+		x_ = _arr[0];
+		y_ = _arr[1];
+		z_ = _arr[2];
+	}
+
 	Vec3 operator+(const Vec3& b);
 	Vec3 operator-(const Vec3& b);
 	Vec3 operator*(const Vec3& b);

@@ -1,12 +1,28 @@
 #include "Debug.h"
 #include "../core/Scene.h"
+#include "../maths/Math.h"
 #include <imgui/imgui.h>
+#include <sstream>
+#include <algorithm>
 
-void Debug::print(string output_) {
-	cout << output_.c_str() << endl;
+int entityComboSelection = 0;
+
+void Debug::print(string _output) {
+	cout << _output.c_str() << endl;
 }
 
 void Debug::drawSceneManager(bool* show, Scene* _scene) {
+	std::vector<Entity> entities = _scene->getEntityManager()->getEntities();
+	std::vector<const char*> entityItems;
+	for(auto& entity : entities) {
+		std::ostringstream oss;
+		oss << entity;
+		const std::string item = oss.str();
+		char* itemChar = new char[item.length() + 1];
+		std::copy(item.c_str(), item.c_str() + item.length() + 1, itemChar);
+		entityItems.push_back(itemChar);
+	}
+
 	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
 
@@ -15,57 +31,58 @@ void Debug::drawSceneManager(bool* show, Scene* _scene) {
 		return;
 	}
 
-	ImGui::PushItemWidth(100); // ImGui::InputInt("", &entityId_imgui);
+	entityComboSelection = Math::clamp(entityComboSelection, -1, entities.size() - 1);
+	ImGui::PushItemWidth(200); ImGui::Combo("", &entityComboSelection, entityItems.data(), entities.size());
+
 	ImGui::SameLine();
-	if (ImGui::Button("New GameObject")) {
-		//TODO: Create gameobject
+	if (ImGui::Button("New Entity")) {
+		//TODO: Create Entity
+		_scene->getEntityManager()->create();
+	}
+
+	if (entityComboSelection == -1) {
+		ImGui::End();
+		return;
+	}
+
+	const Entity selectedEntity = entities.at(entityComboSelection);
+
+	ImGui::SameLine();
+	if (ImGui::Button("Destroy Entity")) {
+		//TODO: Destroy Entity
+		_scene->getEntityManager()->destroy(selectedEntity);
 	}
 	ImGui::Separator();
 
-	if(ImGui::TreeNode("Scene: _sceneName_")) {
-		static int selection_mask = (1 << 2);
-		int node_clicked = -1;
-		int objCount = -1;
-		//TODO: Do below for each gameobject in scene
-		//for (auto& gameobject : *_scene->getGameObjects()) {
-			//objCount++;
-			//drawSceneManager_TreeGameobjectRecursive(gameobject.getComponent<Transform>(), &objCount, selection_mask, &node_clicked);
-		//}
+	//Get Components for selected entity
+	std::vector<void*> componentManagers = _scene->componentManagers_;
+	for(auto& manager : componentManagers) {
+		auto* renderable = static_cast<IDebug*>(manager);
+		if (renderable)
+			renderable->debugRenderImgui(selectedEntity);
+	}
 
-		if(node_clicked != -1) {
-			selection_mask = (1 << node_clicked);
+	ImGui::Separator();
+
+	static ImGuiTextFilter filter;
+	filter.Draw("Component Filter");
+	for (auto& manager : componentManagers) {
+		auto* compManager = static_cast<ComponentManager<void>*>(manager);
+		auto* debug = static_cast<IDebug*>(manager);
+
+		std::string compName = debug->getTypeName();
+		if (compManager && filter.PassFilter(compName.c_str())) {
+
+			std::string buttonLbl = "Add " + compName;
+			if(ImGui::Button(buttonLbl.c_str())) {
+				std::cout << "Adding component: " << compName << endl;
+				//compManager->addComponent(selectedEntity); //TODO: BROKEN. FIX ME!
+				
+			}
 		}
 
-		ImGui::TreePop();
-	}
-
-	ImGui::Separator();
-
-	//TODO: Loop through gameobjects components
-	if (ImGui::CollapsingHeader("Transform")) {
-		ImGui::Text("Transform Controls");
-	}
-
-	if (ImGui::CollapsingHeader("Renderer")) {
-		ImGui::Text("Renderer Controls");
 	}
 
 	ImGui::End();
 }
-
-//void Debug::drawSceneManager_TreeGameobjectRecursive(Transform* _obj, int* _objCount, const int _selectionMask, int* _nodeClicked) {
-//	ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ((_selectionMask & (1 << *_objCount)) ? ImGuiTreeNodeFlags_Selected : 0);
-//	bool nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)_objCount, treeNodeFlags, "_gameObject_");
-//	if (ImGui::IsItemClicked()) {
-//		_nodeClicked = _objCount;
-//	}
-//	if (nodeOpen) {
-//		//Loop children and call this recursive method with them
-//		for (auto& child : *_obj->getChildren()) {
-//			_objCount++;
-//			drawSceneManager_TreeGameobjectRecursive(&child, _objCount, _selectionMask, _nodeClicked);
-//		}
-//		ImGui::TreePop();
-//	}
-//}
 

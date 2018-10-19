@@ -14,6 +14,8 @@ public:
 	std::string getName() const;
 	int getSceneIndex() const;
 
+	EntityManager* getEntityManager() { return &entityManager_; }
+
 	template<typename ComponentType>
 	void addCustomComponentManager(ComponentManager<ComponentType>* manager);
 
@@ -26,12 +28,17 @@ public:
 	template<typename ComponentType>
 	void removeComponent(Entity _entity);
 
+protected:
+	EntityManager entityManager_;
+
 private:
+	friend class SceneManager;
+	friend class Debug;
+
 	std::string name_;
 	int sceneIndex_ = -1;
 
-	EntityManager entityManager_;
-	std::vector<System> systems_;
+	std::vector<System*> systems_;
 	std::vector<void*> componentManagers_;
 
 	virtual void init();
@@ -44,13 +51,12 @@ private:
 	template<typename ComponentType>
 	ComponentManager<ComponentType>* getComponentManager();
 
-	friend class SceneManager;
-
 };
 
 template <typename ComponentType>
 void Scene::addCustomComponentManager(ComponentManager<ComponentType>* manager) {
 	const int familyId = GetComponentFamily<ComponentType>();
+	std::cout << "FAMILY ID " << familyId;
 	if (familyId >= componentManagers_.size())
 		componentManagers_.resize(familyId + 1);
 
@@ -59,14 +65,15 @@ void Scene::addCustomComponentManager(ComponentManager<ComponentType>* manager) 
 
 template <typename ComponentType>
 void Scene::addComponent(Entity _entity) {
-	ComponentManager<ComponentType> manager = getComponentManager<ComponentType>();
-	manager.addComponent(_entity);
+	ComponentManager<ComponentType>* manager = getComponentManager<ComponentType>();
+	manager->addComponent(_entity);
 }
 
 template <typename ComponentType>
 ComponentHandle<ComponentType> Scene::getComponent(Entity _entity) {
-	ComponentManager<ComponentType> manager = getComponentManager<ComponentType>();
-	return manager.getComponent(_entity);
+	ComponentManager<ComponentType>* manager = getComponentManager<ComponentType>();
+	ComponentType* comp = manager->getComponent(_entity);
+	return ComponentHandle<ComponentType>(manager, _entity, comp);
 }
 
 template <typename ComponentType>
@@ -86,6 +93,8 @@ ComponentManager<ComponentType>* Scene::getComponentManager() {
 	if (!componentManagers_[familyId])
 		componentManagers_[familyId] = new ComponentManager<ComponentType>;
 
-	return static_cast<ComponentManager<ComponentType>*>(componentManagers_[familyId]);
+	ComponentManager<ComponentType>* mgr = static_cast<ComponentManager<ComponentType>*>(componentManagers_[familyId]);
+
+	return mgr;
 }
 

@@ -1,9 +1,9 @@
 #pragma once
 #include "../Component.h"
 #include "../../maths/Vec3.h"
-#include <imgui/imgui.h>
+#include <../src/imgui.h>
 
-class Transform : public Component<Transform> {
+class Transform : public Component {
 
 public:
 	Vec3 position_;

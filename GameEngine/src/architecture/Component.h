@@ -1,5 +1,4 @@
 #pragma once
-#include <type_traits>
 #include "../utils/IDebug.h"
 #include "Entity.h"
 
@@ -8,7 +7,6 @@ struct ComponentCounter {
 };
 
 
-template<typename ComponentType>
 class Component : public IDebug{
 public:
 	static int familyId();
@@ -17,13 +15,11 @@ public:
 
 };
 
-template<typename ComponentType>
-int Component<ComponentType>::familyId() {
+int Component::familyId() {
 	static int familyId = ComponentCounter::familyCounter++;
 	return familyId;
 }
 
-template<typename C>
 static int GetComponentFamily() {
-	return Component<typename std::remove_const<C>::type>::familyId();
+	return Component::familyId();
 }

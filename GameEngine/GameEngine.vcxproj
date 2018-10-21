@@ -130,8 +130,8 @@
     <LibraryPath>G:\UserStorage\Documents\Development\Libraries &amp; Utils\OpenGL_Wrappers\Libs\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>G:\UserStorage\Documents\Development\Libraries &amp; Utils\OpenGL_Wrappers\Includes;$(IncludePath)</IncludePath>
-    <LibraryPath>G:\UserStorage\Documents\Development\Libraries &amp; Utils\OpenGL_Wrappers\Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Stuart\Documents\Development\C++\GameEngine\GameEngine\includes;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Stuart\Documents\Development\C++\GameEngine\GameEngine\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -157,7 +157,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>G:\UserStorage\Documents\Development\Libraries &amp; Utils\OpenGL_Wrappers\Includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>

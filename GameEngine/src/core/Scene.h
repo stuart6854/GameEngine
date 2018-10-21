@@ -5,6 +5,7 @@
 #include "../architecture/System.h"
 #include "../architecture/ComponentManager.h"
 #include "../architecture/ComponentHandle.h"
+#include <unordered_map>
 
 class Scene {
 
@@ -39,7 +40,7 @@ private:
 	int sceneIndex_ = -1;
 
 	std::vector<System*> systems_;
-	std::vector<void*> componentManagers_;
+	std::unordered_map<std::string, void*> componentManagers_;
 
 	virtual void init();
 	virtual void update();
@@ -55,12 +56,10 @@ private:
 
 template <typename ComponentType>
 void Scene::addCustomComponentManager(ComponentManager<ComponentType>* manager) {
-	const int familyId = GetComponentFamily<ComponentType>();
-	std::cout << "FAMILY ID " << familyId;
-	if (familyId >= componentManagers_.size())
-		componentManagers_.resize(familyId + 1);
+	const std::string compName = typeid(ComponentType).name();
+	std::cout << "Comp Name: " << compName;
 
-	componentManagers_[familyId] = manager;
+	componentManagers_[compName] = manager;
 }
 
 template <typename ComponentType>
@@ -86,14 +85,12 @@ template <typename ComponentType>
 ComponentManager<ComponentType>* Scene::getComponentManager() {
 	//TODO: This is a performance hit every time we add/remove a component
 
-	int familyId = GetComponentFamily<ComponentType>();
-	if (familyId >= componentManagers_.size())
-		componentManagers_.resize(familyId + 1);
+	std::string compName = typeid(ComponentType).name();
 
-	if (!componentManagers_[familyId])
-		componentManagers_[familyId] = new ComponentManager<ComponentType>;
+	if (!componentManagers_[compName])
+		componentManagers_[compName] = new ComponentManager<ComponentType>;
 
-	ComponentManager<ComponentType>* mgr = static_cast<ComponentManager<ComponentType>*>(componentManagers_[familyId]);
+	ComponentManager<ComponentType>* mgr = static_cast<ComponentManager<ComponentType>*>(componentManagers_[compName]);
 
 	return mgr;
 }

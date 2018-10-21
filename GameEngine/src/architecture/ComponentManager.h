@@ -4,7 +4,7 @@
 #include "Entity.h"
 #include <iostream>
 #include "ComponentHandle.h"
-#include "imgui/imgui.h"
+#include "../imgui.h"
 
 template<typename ComponentType>
 class ComponentManager : public IDebug {
@@ -20,7 +20,7 @@ public:
 		if (it == entityMap_.end())
 			return nullptr;
 
-		Component<ComponentType>* comp = &(it->second);
+		Component* comp = &(it->second);
 		auto* outputComp = dynamic_cast<ComponentType*>(comp);
 
 		//std::cout << "ComponentManager<" << typeid(ComponentType).name() << ">::Got component for: " << _entity << std::endl;
@@ -34,7 +34,7 @@ public:
 	}
 	
 	void debugRenderImgui(Entity _entity) override {
-		Component<ComponentType>* comp = getComponent(_entity);
+		Component* comp = getComponent(_entity);
 		if (comp == nullptr)
 			return;
 		

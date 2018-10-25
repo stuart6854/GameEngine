@@ -1,5 +1,6 @@
 ﻿#pragma once
-#include "../architecture/Entity.h"
+#include "../architecture/EntityManager.h"
+#include <string>
 
 class IDebug {
 public:

@@ -1,26 +1,21 @@
-#pragma once
-#include "../architecture/Entity.h"
-#include "../core/Scene.h"
-#include "ComponentHandle.h"
+﻿#pragma once
+#include "EntityManager.h"
+
+class ECS;
 
 struct EntityHandle {
+	
+	Entity* entity;
+	ECS* ecs;
 
-	Entity entity;
-	Scene* scene;
-
-	template<typename ComponentType>
-	void addComponent(ComponentType _component) {
-		scene->addComponent<ComponentType>(entity);
+	template<typename C>
+	void addComponent() {
+		ecs->addComponent<C>(*this);
 	}
 
-	template<typename ComponentType>
-	ComponentHandle<ComponentType> getComponent() {
-		return scene->getComponent<ComponentType>(entity);
-	}
-
-	template<typename ComponentType>
-	void removeComponent() {
-		scene->removeComponent<ComponentType>(entity);
+	template<typename C>
+	C* getComponent() {
+		return ecs->getComponent<C>(*this);
 	}
 
 };

@@ -1,30 +1,28 @@
 #pragma once
-#include "../System.h"
+#include "../components/Transform.h"
+#include "../components/Movement.h"
+#include <iostream>
 
 class MovementSystem : public System {
 
 public:
 	MovementSystem();
 
-	void init() override;
-	void update(float _deltaTime) override;
-
+	inline void update(float _deltaTime) override;
 };
 
-inline MovementSystem::MovementSystem() {
-	//systemSignature_.set(Position::familyId());
-	//systemSignature_.set(Velocity::familyId());
+inline MovementSystem::MovementSystem(): System(5) {
+	systemSignature_.set(GetComponentFamilyID<Transform>());
+	systemSignature_.set(GetComponentFamilyID<Movement>());
 }
-
-inline void MovementSystem::init() {}
 
 inline void MovementSystem::update(float _deltaTime) {
-	for(auto& entity : registeredEntities_) {
-		//TODO: Get Transform Component
-		//TODO: Get Velocity Component
+	for(auto& entityHandle : registeredEntities_) {
+		Transform* transform = entityHandle.getComponent<Transform>();
+		Movement* movement = entityHandle.getComponent<Movement>();
 
-		//tranform.position  += movement.velocity * _deltaTime;
-		//movement.position  += movement.acceleration * _deltaTime;
+		transform->x += movement->velX;
+		transform->y += movement->velY;
+		transform->z += movement->velZ;
 	}
 }
-

@@ -21,7 +21,7 @@
   <ItemGroup>
     <ClCompile Include="example\main.cpp" />
     <ClCompile Include="example\MyScene.cpp" />
-    <ClCompile Include="src\architecture\Component.cpp" />
+    <ClCompile Include="src\architecture\ComponentManager.cpp" />
     <ClCompile Include="src\architecture\EntityManager.cpp" />
     <ClCompile Include="src\imgui.cpp" />
     <ClCompile Include="src\imgui_demo.cpp" />
@@ -45,11 +45,12 @@
     <ClInclude Include="includes\GLFW\glfw3.h" />
     <ClInclude Include="includes\GLFW\glfw3native.h" />
     <ClInclude Include="includes\KHR\khrplatform.h" />
-    <ClInclude Include="src\architecture\ComponentHandle.h" />
-    <ClInclude Include="src\architecture\EntityHandle.h" />
     <ClInclude Include="src\architecture\Component.h" />
     <ClInclude Include="src\architecture\ComponentManager.h" />
-    <ClInclude Include="src\architecture\Entity.h" />
+    <ClInclude Include="src\architecture\components\Movement.h" />
+    <ClInclude Include="src\architecture\components\Transform.h" />
+    <ClInclude Include="src\architecture\ECS.h" />
+    <ClInclude Include="src\architecture\EntityHandle.h" />
     <ClInclude Include="src\architecture\EntityManager.h" />
     <ClInclude Include="src\architecture\System.h" />
     <ClInclude Include="src\architecture\systems\MovementSystem.h" />
@@ -70,7 +71,6 @@
     <ClInclude Include="src\utils\IDebug.h" />
     <ClInclude Include="src\utils\Time.h" />
     <ClInclude Include="src\maths\Vec3.h" />
-    <ClInclude Include="src\architecture\components\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\TestImage.png" />

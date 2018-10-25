@@ -1,63 +1,39 @@
 #pragma once
 #include <map>
+#include <memory>
 #include "Component.h"
-#include "Entity.h"
-#include <iostream>
-#include "../imgui.h"
 
-class ComponentManager : public IDebug {
-
-public:
-	void addComponent(Entity _entity, Component* _component) {
-		if (componentName_.empty())
-			componentName_ = _component->getTypeName();
-
-		entityMap_.insert(std::pair<unsigned int, Component>(_entity.id, *_component));
-		std::cout << "ComponentManager<" << componentName_ << ">::Component added for: " << _entity << std::endl;
-	}
-
-	Component* getComponent(Entity _entity) {
-		const auto it = entityMap_.find(_entity.id);
-		if (it == entityMap_.end())
-			return nullptr;
-
-		Component* comp = &(it->second);
-		return comp;
-	}
-
-	template<typename ComponentType>
-	Component* getComponent(Entity _entity) {
-		Component* comp = getComponent(_entity);
-		auto* outputComp = dynamic_cast<ComponentType*>(comp);
-		
-		return outputComp;
-	}
-
-	void removeComponent(Entity _entity) {
-		auto it = entityMap_.find(_entity.id);
-		entityMap_.erase(it);
-		std::cout << "ComponentManager<" << componentName_ << ">::Component removed for: " << _entity << std::endl;
-	}
-	
-	void debugRenderImgui(Entity _entity) override {
-		Component* comp = getComponent(_entity);
-		if (comp == nullptr)
-			return;
-		
-		if (ImGui::CollapsingHeader(getTypeName().c_str())) {
-			IDebug* renderable = comp;
-
-			renderable->debugRenderImgui(_entity);
-		}
-	}
-
-	inline std::string getTypeName() override {
-		return componentName_;
-	};
+class ComponentManager {
 
 private:
-	std::string componentName_;
+	static int nextId_;
+	
+	std::map<int, std::shared_ptr<Component>> components;
 
-	std::map<unsigned int, Component> entityMap_;
+public:
+	~ComponentManager();
+
+	std::shared_ptr<Component> getComponent(const int _id);
+	Component* addComponent(Component* _comp);
 
 };
+
+inline ComponentManager::~ComponentManager() {
+	/*for(auto& [key, val] : components) {
+		delete &val;
+	}*/
+}
+
+inline std::shared_ptr<Component> ComponentManager::getComponent(const int _id) {
+	return components[_id];
+}
+
+inline Component* ComponentManager::addComponent(Component* _comp) {
+	const int compId = nextId_++;
+	_comp->id_ = compId;
+	components.insert(std::make_pair(compId, _comp));
+
+	return _comp;
+}
+
+

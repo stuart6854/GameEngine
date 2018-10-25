@@ -1,19 +1,20 @@
 #include "MyScene.h"
+#include "../src/architecture/systems/MovementSystem.h"
 #include "../src/architecture/components/Transform.h"
+#include "../src/architecture/components/Movement.h"
 
 void MyScene::init() {
-	Entity e = entityManager_.create();
-	addComponent(e, new Transform);
-	entityManager_.create();
-	entityManager_.create();
-	entityManager_.create();
-	entityManager_.create();
+	ecs.addSystem<MovementSystem>();
+
+	EntityHandle entity = ecs.createEntity();
+	entity.addComponent<Transform>();
+	entity.addComponent<Movement>();
 }
 
 void MyScene::update() {
-
+	ecs.update();
 }
 
 void MyScene::render() {
-	
+	//ecs.render();
 }

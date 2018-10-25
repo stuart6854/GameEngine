@@ -4,7 +4,7 @@
 class Entity {
 
 public:
-	explicit Entity(const int _id) : id(_id){}
+	Entity(const int _id) : id(_id){}
 
 	unsigned int id; // There should NEVER be an entity with an id of 0
 

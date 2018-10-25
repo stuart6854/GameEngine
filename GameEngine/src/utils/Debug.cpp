@@ -55,7 +55,7 @@ void Debug::drawSceneManager(bool* show, Scene* _scene) {
 	ImGui::Separator();
 
 	//Get Components for selected entity
-	std::vector<void*> componentManagers = _scene->componentManagers_;
+	std::vector<ComponentManager*> componentManagers = _scene->getComponentManagers();
 	for(auto& manager : componentManagers) {
 		auto* renderable = static_cast<IDebug*>(manager);
 		if (renderable)
@@ -67,10 +67,10 @@ void Debug::drawSceneManager(bool* show, Scene* _scene) {
 	static ImGuiTextFilter filter;
 	filter.Draw("Component Filter");
 	for (auto& manager : componentManagers) {
-		auto* compManager = static_cast<ComponentManager<void>*>(manager);
+		auto* compManager = static_cast<ComponentManager*>(manager);
 		auto* debug = static_cast<IDebug*>(manager);
 
-		std::string compName = debug->getTypeName();
+		std::string compName = compManager->getTypeName();
 		if (compManager && filter.PassFilter(compName.c_str())) {
 
 			std::string buttonLbl = "Add " + compName;

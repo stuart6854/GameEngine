@@ -155,6 +155,18 @@
     <ClInclude Include="src\utils\IDebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\GLFW\glfw3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\GLFW\glfw3native.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\glad\glad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\KHR\khrplatform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\TestImage.png">
@@ -163,5 +175,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
+    <None Include="libs\glfw3.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="libs\glfw3dll.lib" />
+    <Library Include="libs\glfw3.lib" />
   </ItemGroup>
 </Project>

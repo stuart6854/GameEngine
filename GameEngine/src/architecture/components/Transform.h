@@ -15,6 +15,10 @@ public:
 		return _output;
 	}
 
+	std::string componentType() const override {
+		return "Transform";
+	}
+
 private:
 	void debugRenderImgui(Entity _entity) override {
 		float pos[3] = { position_.x(), position_.y(), position_.z() };

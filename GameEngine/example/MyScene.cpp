@@ -3,7 +3,7 @@
 
 void MyScene::init() {
 	Entity e = entityManager_.create();
-	addComponent<Transform>(e);
+	addComponent(e, new Transform);
 	entityManager_.create();
 	entityManager_.create();
 	entityManager_.create();

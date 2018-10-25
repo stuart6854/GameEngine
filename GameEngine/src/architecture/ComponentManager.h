@@ -3,34 +3,40 @@
 #include "Component.h"
 #include "Entity.h"
 #include <iostream>
-#include "ComponentHandle.h"
 #include "../imgui.h"
 
-template<typename ComponentType>
 class ComponentManager : public IDebug {
 
 public:
-	void addComponent(Entity _entity) {
-		//entityMap_.insert(std::pair<unsigned int, ComponentType>(_entity.id, ComponentType()));
-		std::cout << "ComponentManager" << typeid(ComponentType).name() << "::Component added for: " << _entity << std::endl;
+	void addComponent(Entity _entity, Component* _component) {
+		if (componentName_.empty())
+			componentName_ = _component->getTypeName();
+
+		entityMap_.insert(std::pair<unsigned int, Component>(_entity.id, *_component));
+		std::cout << "ComponentManager<" << componentName_ << ">::Component added for: " << _entity << std::endl;
 	}
 
-	ComponentType* getComponent(Entity _entity) {
-		auto it = entityMap_.find(_entity.id);
+	Component* getComponent(Entity _entity) {
+		const auto it = entityMap_.find(_entity.id);
 		if (it == entityMap_.end())
 			return nullptr;
 
 		Component* comp = &(it->second);
-		auto* outputComp = dynamic_cast<ComponentType*>(comp);
+		return comp;
+	}
 
-		//std::cout << "ComponentManager<" << typeid(ComponentType).name() << ">::Got component for: " << _entity << std::endl;
+	template<typename ComponentType>
+	Component* getComponent(Entity _entity) {
+		Component* comp = getComponent(_entity);
+		auto* outputComp = dynamic_cast<ComponentType*>(comp);
+		
 		return outputComp;
 	}
 
 	void removeComponent(Entity _entity) {
 		auto it = entityMap_.find(_entity.id);
 		entityMap_.erase(it);
-		std::cout << "ComponentManager" << typeid(ComponentType).name() << "::Component removed for: " << _entity << std::endl;
+		std::cout << "ComponentManager<" << componentName_ << ">::Component removed for: " << _entity << std::endl;
 	}
 	
 	void debugRenderImgui(Entity _entity) override {
@@ -46,15 +52,12 @@ public:
 	}
 
 	inline std::string getTypeName() override {
-		std::string toErase = "class ";
-		std::string compName = typeid(ComponentType).name();
-		size_t pos = compName.find(toErase);
-		if (pos != std::string::npos)
-			compName.erase(pos, toErase.length());
-		return compName;
+		return componentName_;
 	};
 
 private:
-	std::map<unsigned int, ComponentType> entityMap_;
+	std::string componentName_;
+
+	std::map<unsigned int, Component> entityMap_;
 
 };

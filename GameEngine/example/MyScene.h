@@ -4,8 +4,8 @@
 class MyScene : public Scene{
 
 public:
-	void init();
-	void update();
+	void init() override;
+	void update() override;
 	void render() override;
 
 };

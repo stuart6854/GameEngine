@@ -5,7 +5,7 @@ class ECS;
 
 struct EntityHandle {
 	
-	Entity* entity;
+	std::shared_ptr<Entity> entity;
 	ECS* ecs;
 
 	template<typename C>

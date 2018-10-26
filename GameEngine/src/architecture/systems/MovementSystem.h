@@ -12,8 +12,8 @@ public:
 };
 
 inline MovementSystem::MovementSystem(): System(5) {
-	systemSignature_.set(GetComponentFamilyID<Transform>());
-	systemSignature_.set(GetComponentFamilyID<Movement>());
+	systemSignature_.set(Component::ComponentFamilyID<Transform>());
+	systemSignature_.set(Component::ComponentFamilyID<Movement>());
 }
 
 inline void MovementSystem::update(float _deltaTime) {

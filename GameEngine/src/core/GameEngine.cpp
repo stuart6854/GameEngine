@@ -59,9 +59,9 @@ void GameEngine::start(){
 		return;
 	}
 
-	double currentFrame_ = glfwGetTime();
-	double lastFrame_ = currentFrame_;
-	float deltaTime_ = 0;
+	double currentFrame = glfwGetTime();
+	double lastFrame = currentFrame;
+	float deltaTime = 0;
 	
 	SceneManager::loadScene(0); //Load first scene
 
@@ -72,28 +72,29 @@ void GameEngine::start(){
 	Debug::print("ENGINE :: Starting engine loop");
 	while (!window_.shouldClose()) {
 		//Delta Calculation
-		currentFrame_ = glfwGetTime();
-		deltaTime_ = (currentFrame_ - lastFrame_);
-		lastFrame_ = currentFrame_;
-		Time::setDeltaTime(deltaTime_);
+		currentFrame = glfwGetTime();
+		deltaTime = (currentFrame - lastFrame);
+		lastFrame = currentFrame;
+		Time::setDeltaTime(deltaTime);
 
 		// Input
 
 		//Update
-		SceneManager::updateCurrentScene(deltaTime_);
+		SceneManager::updateCurrentScene(deltaTime);
 
 		//AI
 
 		//Physics
 
 		//Rendering
+
 		//ImGui
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
 		ImGui::ShowDemoWindow(&showDemoWindow_imgui);
-		Debug::drawSceneManager(&showSceneManager_imgui, SceneManager::getScene(SceneManager::currentSceneIndex_));
+		Debug::callDebugRenderFuncs();
 
 		ImGui::Render();
 

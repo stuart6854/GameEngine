@@ -15,7 +15,7 @@ public:
 	void registerEntity(EntityHandle _entityHandle);
 	void deRegisterEntity(EntityHandle _entityHandle);
 
-	bool entityMatchesSignature(Entity* _entity);
+	bool entityMatchesSignature(std::shared_ptr<Entity> _entity);
 
 	bool operator<(const System& _other) const;
 
@@ -50,7 +50,7 @@ inline void System::deRegisterEntity(EntityHandle _entityHandle) {
 	}
 }
 
-inline bool System::entityMatchesSignature(Entity* _entity) {
+inline bool System::entityMatchesSignature(std::shared_ptr<Entity> _entity) {
 	return (systemSignature_ & _entity->getComponentSignature()) == systemSignature_;
 }
 

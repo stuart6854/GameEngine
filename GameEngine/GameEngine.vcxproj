@@ -21,7 +21,9 @@
   <ItemGroup>
     <ClCompile Include="example\main.cpp" />
     <ClCompile Include="example\MyScene.cpp" />
+    <ClCompile Include="src\architecture\Component.cpp" />
     <ClCompile Include="src\architecture\ComponentManager.cpp" />
+    <ClCompile Include="src\architecture\ECS.cpp" />
     <ClCompile Include="src\architecture\EntityManager.cpp" />
     <ClCompile Include="src\imgui.cpp" />
     <ClCompile Include="src\imgui_demo.cpp" />
@@ -41,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="example\MyScene.h" />
+    <ClInclude Include="IDebugRenderable.h" />
     <ClInclude Include="includes\glad\glad.h" />
     <ClInclude Include="includes\GLFW\glfw3.h" />
     <ClInclude Include="includes\GLFW\glfw3native.h" />
@@ -68,7 +71,6 @@
     <ClInclude Include="src\core\Scene.h" />
     <ClInclude Include="src\core\SceneManager.h" />
     <ClInclude Include="src\graphics\Window.h" />
-    <ClInclude Include="src\utils\IDebug.h" />
     <ClInclude Include="src\utils\Time.h" />
     <ClInclude Include="src\maths\Vec3.h" />
   </ItemGroup>

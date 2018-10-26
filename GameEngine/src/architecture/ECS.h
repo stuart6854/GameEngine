@@ -1,9 +1,7 @@
 #pragma once
 #include "EntityManager.h"
 #include "ComponentManager.h"
-#include <cassert>
 #include "System.h"
-#include <iostream>
 struct EntityHandle;
 
 class ECS {
@@ -13,7 +11,13 @@ private:
 	ComponentManager componentManager_;
 	std::vector<std::unique_ptr<System>> systems_;
 
+	int debug_entitySelection = -1;
+
+	void renderDebugEntityManager();
+
 public:
+	ECS();
+
 	void update();
 
 	EntityHandle createEntity();
@@ -30,31 +34,13 @@ public:
 
 };
 
-inline void ECS::update() {
-	for(auto& system : systems_) {
-		system->update(1);
-	}
-}
-
-inline EntityHandle ECS::createEntity() {
-	EntityHandle handle;
-	handle.ecs = this;
-	handle.entity = entityManager_.createEntity();
-	return handle;
-}
-
-inline void ECS::destroyEntity(EntityHandle _entityHandle) {
-	//TODO: find and remove all of Entities components
-	entityManager_.destroyEntity(_entityHandle.entity);
-}
-
 template <typename C>
 void ECS::addComponent(EntityHandle _entityHandle) {
 	Component* comp = componentManager_.addComponent(new C());
 	entityManager_.addComponent<C>(_entityHandle.entity, comp);
 
-	for (auto& system : systems_) {
-		if (system->entityMatchesSignature(_entityHandle.entity)) {
+	for(auto& system : systems_) {
+		if(system->entityMatchesSignature(_entityHandle.entity)) {
 			system->registerEntity(_entityHandle);
 		}
 	}
@@ -62,7 +48,7 @@ void ECS::addComponent(EntityHandle _entityHandle) {
 
 template <typename C>
 C* ECS::getComponent(EntityHandle _entityHandle) {
-	const std::string compName = typeid(C).name();
+	const std::string compName = Component::ComponentType<C>();
 	const int compId = _entityHandle.entity->getComponentId(compName);
 	std::shared_ptr<Component> component = componentManager_.getComponent(compId);
 
@@ -70,12 +56,9 @@ C* ECS::getComponent(EntityHandle _entityHandle) {
 	return returnComp.get();
 }
 
-//TODO: Remove component
-
 template <typename S>
 void ECS::addSystem() {
 	std::unique_ptr<System> system(new S);
 	systems_.push_back(std::move(system));
 	//std::cout << "ECS::System Added." << std::endl;
 }
-

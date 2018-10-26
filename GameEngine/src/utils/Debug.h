@@ -1,21 +1,18 @@
 #pragma once
 
-#include <iostream>
 #include "../core/Scene.h"
-
-using std::cout;
-using std::endl;
-using std::string;
+#include <functional>
 
 class Debug {
 
 public:
-	static void print(string output_);
+	static void callDebugRenderFuncs();
 
-	static void drawSceneManager(bool* show, Scene* _scene);
+	static void print(const std::string& _output);
 
+	static void registerDebugRenderFunc(const std::function<void()>& _renderFunc);
+	
 private:
-	//static void drawSceneManager_TreeGameobjectRecursive(Transform* _obj, int* _objCount, const int _selectionMask, int* _nodeClicked);
+	static std::vector<std::function<void()>> debugRenderFuncs_;
 
 };
-

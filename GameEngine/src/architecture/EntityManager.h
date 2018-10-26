@@ -30,7 +30,11 @@ public:
 		signature_.set(_comp->familyId());
 	}
 
-	bool operator==(const Entity& other) {
+	std::unordered_map<std::string, int> getComponentIdsMap() {
+		return components_;
+	}
+
+	bool operator==(Entity& other) {
 		return (this->id() == other.id_);
 	}
 
@@ -41,35 +45,48 @@ class EntityManager {
 private:
 	static int nextId_;
 
-	std::vector<Entity> entities;
+	std::vector<std::shared_ptr<Entity>> entities;
 
 public:
-	Entity* createEntity();
+	std::shared_ptr<Entity> createEntity();
 
 	template<typename C>
-	void addComponent(Entity* _entity, Component* _comp);
+	void addComponent(std::shared_ptr<Entity>, Component* _comp);
 
-	void destroyEntity(Entity* e);
+	void destroyEntity(std::shared_ptr<Entity> e);
+
+	std::vector<std::shared_ptr<Entity>> getEntities();
 
 };
 
-inline Entity* EntityManager::createEntity() {
-	Entity e(nextId_++);
+inline std::shared_ptr<Entity> EntityManager::createEntity() {
+	Entity* e = new Entity(nextId_++);
+	std::shared_ptr<Entity> entityPtr(e);
+	entities.push_back(entityPtr);
 
-	entities.push_back(e);
+	std::cout << "EntityManager::Entity(" << entityPtr->id() << ") created." << std::endl;
 
-	std::cout << "EntityManager::Entity(" << e.id() << ") created." << std::endl;
-
-	return &entities.back();
+	return entities.back();
 }
 
 template <typename C>
-void EntityManager::addComponent(Entity* _entity, Component* _comp) {
-	std::string compType = typeid(C).name();
+void EntityManager::addComponent(std::shared_ptr<Entity> _entity, Component* _comp) {
+	std::string compType = Component::ComponentType<C>();
 	_entity->addComponent(compType, _comp);
 }
 
-inline void EntityManager::destroyEntity(Entity* e) {
-	const auto it = std::find(entities.begin(), entities.end(), *e);
-	entities.erase(it);
+inline void EntityManager::destroyEntity(std::shared_ptr<Entity> _entity) {
+	const auto it = std::find(entities.begin(), entities.end(), _entity);
+	entities.erase(it); 
+	std::cout << "EntityManager::Entity(" << _entity->id() << ") destroyed." << std::endl;
+}
+
+inline std::vector<std::shared_ptr<Entity>> EntityManager::getEntities() {
+	std::vector<std::shared_ptr<Entity>> returnEntities;
+
+	for(auto& entity : entities) {
+		returnEntities.push_back(entity);
+	}
+
+	return returnEntities;
 }

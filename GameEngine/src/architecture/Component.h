@@ -2,10 +2,14 @@
 
 #include "../../IDebugRenderable.h"
 #include <vector>
+#include <map>
 
 class Component : public IDebugRenderable{
 
 private:
+	static std::map<std::string, Component*> factoryMap_;
+
+protected:
 	void registerComponentType();
 
 public:
@@ -18,18 +22,21 @@ public:
 		registerComponentType();
 	}
 	virtual ~Component() = default;
+	virtual Component* clone() const { return new Component(*this); }
 
 	std::string componentType() const;
 	
 	int familyId();
 
-	virtual void debugRender() override = 0;
+	virtual void debugRender() override{ }
 
 	template<typename C>
 	static std::string ComponentType();
 
 	template<typename C>
 	static int ComponentFamilyID();
+
+	static Component* createFromString(const std::string& _compType);
 
 };
 

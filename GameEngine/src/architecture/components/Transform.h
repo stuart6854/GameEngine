@@ -8,7 +8,13 @@ class Transform : public Component {
 public:
 	float x = 0, y = 0, z = 0;
 
-	Transform(void){ }
+	Transform(void) {
+		registerComponentType();
+	}
+
+	Component* clone() const override {
+		return new Transform(*this);
+	}
 
 	friend std::ostream& operator<<(std::ostream& _output, Transform& _transform) {
 		_output << "Transform(" << _transform.x << ", " << _transform.y << ", " << _transform.z << ")";

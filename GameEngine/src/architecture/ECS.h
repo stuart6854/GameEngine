@@ -13,6 +13,8 @@ private:
 
 	int debug_entitySelection = -1;
 
+	void addComponent(std::shared_ptr<Entity> _entity, Component* _comp);
+
 	void renderDebugEntityManager();
 
 public:
@@ -36,14 +38,7 @@ public:
 
 template <typename C>
 void ECS::addComponent(EntityHandle _entityHandle) {
-	Component* comp = componentManager_.addComponent(new C());
-	entityManager_.addComponent<C>(_entityHandle.entity, comp);
-
-	for(auto& system : systems_) {
-		if(system->entityMatchesSignature(_entityHandle.entity)) {
-			system->registerEntity(_entityHandle);
-		}
-	}
+	addComponent(_entityHandle.entity, new C());
 }
 
 template <typename C>

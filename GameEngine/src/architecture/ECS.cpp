@@ -33,6 +33,21 @@ void ECS::destroyEntity(EntityHandle _entityHandle) {
 
 //TODO: Remove component
 
+void ECS::addComponent(std::shared_ptr<Entity> _entity, Component* _comp) {
+	Component* comp = componentManager_.addComponent(_comp);
+	entityManager_.addComponent(_entity, comp);
+
+	EntityHandle eHandle;
+	eHandle.entity = _entity;
+	eHandle.ecs = this;
+
+	for(auto& system : systems_) {
+		if(system->entityMatchesSignature(eHandle.entity)) {
+			system->registerEntity(eHandle);
+		}
+	}
+}
+
 void ECS::renderDebugEntityManager() {
 	std::vector<std::shared_ptr<Entity>> entities = entityManager_.getEntities();
 	std::vector<const char*> entityItems;
@@ -94,7 +109,8 @@ void ECS::renderDebugEntityManager() {
 			std::string buttonLbl = "Add " + componentType;
 			if(ImGui::Button(buttonLbl.c_str())) {
 				std::cout << "Adding component: " << componentType << std::endl;
-				//compManager->addComponent(selectedEntity); //TODO: BROKEN. FIX ME!
+				Component* createdComp = Component::createFromString(componentType);
+				addComponent(selectedEntity, createdComp);
 			}
 		}
 

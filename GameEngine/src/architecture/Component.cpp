@@ -1,7 +1,9 @@
 #include "Component.h"
 #include <vector>
 #include <vcruntime_typeinfo.h>
-std::vector<std::string> Component::knownComponentsList_;
+#include <iostream>
+std::vector<std::string> Component::knownComponentsList_; 
+std::map<std::string, Component*> Component::factoryMap_;
 
 void Component::registerComponentType() {
 	const std::string compType = componentType();
@@ -11,6 +13,10 @@ void Component::registerComponentType() {
 	const auto it = std::find(knownComponentsList_.begin(), knownComponentsList_.end(), compType);
 	if(it == knownComponentsList_.end())
 		knownComponentsList_.push_back(compType);
+
+	const auto it2 = factoryMap_.find(compType);
+	if(it2 == factoryMap_.end())
+		factoryMap_.insert(std::make_pair(compType, (*this).clone()));
 }
 
 std::string Component::componentType() const {
@@ -37,4 +43,12 @@ int Component::familyId() {
 	familyId_ = index;
 
 	return familyId_;
+}
+
+Component* Component::createFromString(const std::string& _compType) {
+	auto it = factoryMap_.find(_compType);
+	if(it == factoryMap_.end())
+		return nullptr;
+	Component* comp = &(*it->second->clone());
+	return comp;
 }

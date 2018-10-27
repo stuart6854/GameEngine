@@ -50,7 +50,6 @@ private:
 public:
 	std::shared_ptr<Entity> createEntity();
 
-	template<typename C>
 	void addComponent(std::shared_ptr<Entity>, Component* _comp);
 
 	void destroyEntity(std::shared_ptr<Entity> e);
@@ -59,34 +58,3 @@ public:
 
 };
 
-inline std::shared_ptr<Entity> EntityManager::createEntity() {
-	Entity* e = new Entity(nextId_++);
-	std::shared_ptr<Entity> entityPtr(e);
-	entities.push_back(entityPtr);
-
-	std::cout << "EntityManager::Entity(" << entityPtr->id() << ") created." << std::endl;
-
-	return entities.back();
-}
-
-template <typename C>
-void EntityManager::addComponent(std::shared_ptr<Entity> _entity, Component* _comp) {
-	std::string compType = Component::ComponentType<C>();
-	_entity->addComponent(compType, _comp);
-}
-
-inline void EntityManager::destroyEntity(std::shared_ptr<Entity> _entity) {
-	const auto it = std::find(entities.begin(), entities.end(), _entity);
-	entities.erase(it); 
-	std::cout << "EntityManager::Entity(" << _entity->id() << ") destroyed." << std::endl;
-}
-
-inline std::vector<std::shared_ptr<Entity>> EntityManager::getEntities() {
-	std::vector<std::shared_ptr<Entity>> returnEntities;
-
-	for(auto& entity : entities) {
-		returnEntities.push_back(entity);
-	}
-
-	return returnEntities;
-}

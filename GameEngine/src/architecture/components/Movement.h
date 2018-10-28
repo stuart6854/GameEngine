@@ -7,10 +7,6 @@ class Movement : public Component {
 public:
 	float velX = 0, velY = 0, velZ = 0;
 
-	Movement(void) {
-		registerComponentType();
-	}
-
 	Component* clone() const override {
 		return new Movement(*this);
 	}

@@ -21,6 +21,7 @@ public:
 	ECS();
 
 	void update();
+	void render();
 
 	EntityHandle createEntity();
 	void destroyEntity(EntityHandle _entityHandle);

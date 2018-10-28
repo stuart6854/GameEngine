@@ -9,7 +9,7 @@ public:
 	System(const int _priority) : priority_(_priority){ }
 	virtual ~System() = default;
 
-	virtual void update(float _deltaTime);
+	virtual void update();
 	virtual void render();
 
 	void registerEntity(EntityHandle _entityHandle);
@@ -28,7 +28,7 @@ protected:
 
 };
 
-inline void System::update(float _deltaTime) {
+inline void System::update() {
 	
 }
 

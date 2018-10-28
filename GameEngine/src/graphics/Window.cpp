@@ -9,10 +9,11 @@ void processInput(GLFWwindow *_window);
 void Window::initialise() {
 	// Initialise and configure GLFW
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Mac OS X
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 }
 
 void Window::createWindow(std::string _title, int _width, int _height, bool _fullscreen) {
@@ -41,6 +42,7 @@ void Window::createWindow(std::string _title, int _width, int _height, bool _ful
 }
 
 void Window::update() {
+	glfwMakeContextCurrent(window_);
 	// Check and call events and swap buffers
 	if (showFps_) glfwSetWindowTitle(window_, (title_ + " | " + std::to_string(Time::deltaTime()) + "ms" + " | " + std::to_string(Time::fps()) + "fps").c_str());
 	glfwSwapBuffers(window_);

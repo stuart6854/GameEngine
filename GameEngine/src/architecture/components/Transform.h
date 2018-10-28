@@ -8,10 +8,6 @@ class Transform : public Component {
 public:
 	float x = 0, y = 0, z = 0;
 
-	Transform(void) {
-		registerComponentType();
-	}
-
 	Component* clone() const override {
 		return new Transform(*this);
 	}

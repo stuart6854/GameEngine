@@ -4,8 +4,7 @@
 #include <sstream>
 #include "../utils/Debug.h"
 #include "../maths/Math.h"
-#include "../utils/Debug.h"
-#include "../../IDebugRenderable.h"
+#include "../utils/IDebugRenderable.h"
 
 ECS::ECS() {
 	Debug::registerDebugRenderFunc([=]() {
@@ -15,9 +14,16 @@ ECS::ECS() {
 
 void ECS::update() {
 	for(auto& system : systems_) {
-		system->update(1);
+		system->update();
 	}
 }
+
+void ECS::render() {
+	for(auto& system : systems_) {
+		system->render();
+	}
+}
+
 
 EntityHandle ECS::createEntity() {
 	EntityHandle handle;
@@ -89,7 +95,6 @@ void ECS::renderDebugEntityManager() {
 	ImGui::Separator();
 
 	//Get Components for selected entity
-
 	std::unordered_map<std::string, int> entityCompIdsMap = selectedEntity->getComponentIdsMap(); 
 	for(auto& compPair : entityCompIdsMap) {
 		std::shared_ptr<Component> component = componentManager_.getComponent(compPair.second);
@@ -108,7 +113,7 @@ void ECS::renderDebugEntityManager() {
 
 			std::string buttonLbl = "Add " + componentType;
 			if(ImGui::Button(buttonLbl.c_str())) {
-				std::cout << "Adding component: " << componentType << std::endl;
+				//std::cout << "Adding component: " << componentType << std::endl;
 				Component* createdComp = Component::createFromString(componentType);
 				addComponent(selectedEntity, createdComp);
 			}

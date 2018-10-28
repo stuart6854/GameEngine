@@ -1,16 +1,14 @@
 #pragma once
 
-#include "../../IDebugRenderable.h"
 #include <vector>
 #include <map>
+#include <vcruntime_typeinfo.h>
+#include "../utils/IDebugRenderable.h"
 
 class Component : public IDebugRenderable{
 
 private:
 	static std::map<std::string, Component*> factoryMap_;
-
-protected:
-	void registerComponentType();
 
 public:
 	static std::vector<std::string> knownComponentsList_;
@@ -18,9 +16,6 @@ public:
 	int familyId_ = -1;
 	int id_ = 0;
 
-	Component() {
-		registerComponentType();
-	}
 	virtual ~Component() = default;
 	virtual Component* clone() const { return new Component(*this); }
 
@@ -35,6 +30,9 @@ public:
 
 	template<typename C>
 	static int ComponentFamilyID();
+
+	template<typename C>
+	static void RegisterComponentType();
 
 	static Component* createFromString(const std::string& _compType);
 
@@ -65,3 +63,17 @@ int Component::ComponentFamilyID() {
 	return index;
 }
 
+template<typename C>
+void Component::RegisterComponentType() {
+	const std::string compType = ComponentType<C>();
+	if(compType == "Component")
+		return;
+
+	const auto it = std::find(knownComponentsList_.begin(), knownComponentsList_.end(), compType);
+	if(it == knownComponentsList_.end())
+		knownComponentsList_.push_back(compType);
+
+	const auto it2 = factoryMap_.find(compType);
+	if(it2 == factoryMap_.end())
+		factoryMap_.insert(std::make_pair(compType, new C));
+}

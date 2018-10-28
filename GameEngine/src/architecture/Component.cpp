@@ -5,20 +5,6 @@
 std::vector<std::string> Component::knownComponentsList_; 
 std::map<std::string, Component*> Component::factoryMap_;
 
-void Component::registerComponentType() {
-	const std::string compType = componentType();
-	if(compType == "Component")
-		return;
-
-	const auto it = std::find(knownComponentsList_.begin(), knownComponentsList_.end(), compType);
-	if(it == knownComponentsList_.end())
-		knownComponentsList_.push_back(compType);
-
-	const auto it2 = factoryMap_.find(compType);
-	if(it2 == factoryMap_.end())
-		factoryMap_.insert(std::make_pair(compType, (*this).clone()));
-}
-
 std::string Component::componentType() const {
 	std::string compType = typeid(*this).name();
 	const std::string toRemove = "class ";

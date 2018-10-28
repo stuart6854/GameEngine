@@ -16,5 +16,5 @@ void MyScene::update() {
 }
 
 void MyScene::render() {
-	//ecs.render();
+	ecs.render();
 }

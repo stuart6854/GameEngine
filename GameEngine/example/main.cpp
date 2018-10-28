@@ -4,6 +4,9 @@
 #include "../src/core/GameEngine.h"
 
 int main() {
+	//Register Custom Components
+	//Component::RegisterComponentType<CustomCompType>();
+
 	MyScene myScene_;
 	SceneManager::addScene(&myScene_);
 

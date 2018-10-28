@@ -6,7 +6,7 @@ int SceneManager::sceneCount_;
 int SceneManager::currentSceneIndex_;
 Scene* SceneManager::activeScene_;
 
-void SceneManager::updateCurrentScene(float _deltaTime) {
+void SceneManager::updateCurrentScene() {
 	//Debug::print("Engine :: SceneManager :: updateCurrentScene()");
 	activeScene_->update();
 }

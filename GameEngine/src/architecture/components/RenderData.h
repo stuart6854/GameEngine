@@ -7,7 +7,7 @@
 class RenderData : public Component {
 	
 public:
-	Mesh* mesh_;
+	std::shared_ptr<Mesh> mesh_;
 	Material material_;
 
 	Component* clone() const override {
@@ -15,9 +15,14 @@ public:
 	}
 
 	void debugRender() override {
-		ImGui::Text("Mesh");
+		std::string meshId = "Mesh: " + mesh_->identifier();
+		ImGui::Text(meshId.c_str());
 		ImGui::Text("Material");
+		ImGui::Separator();
 		//TODO: Render Material Controls
+		ImGui::ColorEdit4("Diffuse Color", (float*)material_.diffuseColor(), ImGuiColorEditFlags_NoInputs);
+
+		ImGui::Separator();
 	}
 
 };

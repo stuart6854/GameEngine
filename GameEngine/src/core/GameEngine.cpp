@@ -13,8 +13,9 @@
 #include "../architecture/components/Transform.h"
 #include "../architecture/components/Movement.h"
 #include "../architecture/components/RenderData.h"
-
-
+#include "../utils/TextAsset.h"
+#include "../graphics/ShaderProgram.h"
+#include "../maths/Mat4.h"
 Window window;
 
 bool GameEngine::isValidStart() {
@@ -45,8 +46,8 @@ bool GameEngine::initialise() {
 
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-	glDebugMessageCallback(Debug::glDebugMessageCallback, NULL);
-	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
+	glDebugMessageCallback(Debug::glDebugMessageCallback, nullptr);
+	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -61,11 +62,57 @@ bool GameEngine::initialise() {
 	Component::RegisterComponentType<Movement>();
 	Component::RegisterComponentType<RenderData>();
 
+
 	initialised_ = true;
 	return true;
 }
 
 void GameEngine::start(){
+	Mat4 a;
+	a.m11 = 1;
+	a.m12 = 2;
+	a.m13 = 3;
+	a.m14 = 4;
+
+	a.m21 = 5;
+	a.m22 = 6;
+	a.m23 = 7;
+	a.m24 = 8;
+
+	a.m31 = 9;
+	a.m32 = 10;
+	a.m33 = 11;
+	a.m34 = 12;
+
+	a.m41 = 13;
+	a.m42 = 14;
+	a.m43 = 15;
+	a.m44 = 16;
+
+	Mat4 b;
+	b.m11 = 16;
+	b.m12 = 15;
+	b.m13 = 14;
+	b.m14 = 13;
+
+	b.m21 = 12;
+	b.m22 = 11;
+	b.m23 = 10;
+	b.m24 = 9;
+
+	b.m31 = 8;
+	b.m32 = 7;
+	b.m33 = 6;
+	b.m34 = 5;
+
+	b.m41 = 4;
+	b.m42 = 3;
+	b.m43 = 2;
+	b.m44 = 1;
+
+	a.mul(b);
+	std::cout << a << std::endl;
+
 	if(!initialised_) {
 		Debug::print("ENGINE :: Cannot start engine without initialising!");
 		glfwTerminate();
@@ -79,81 +126,9 @@ void GameEngine::start(){
 	bool showDemoWindow_imgui = true;
 
 	////OPENGL TEST
-
-	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		0.0f,  0.5f, 0.0f
-	};
 	
-	std::string vertexShaderSrc = R"(
-#version 330 core
-layout (location = 0) in vec3 aPos;
-void main()	{
-	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
-})";
-	auto temp = vertexShaderSrc.c_str();
-
-	unsigned int vertexShader;
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
-	glShaderSource(vertexShader, 1, &temp, NULL);
-	glCompileShader(vertexShader);
-
-	int  success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success); 
-	if(!success) {
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	std::string fragmentShaderSrc = R"(
-#version 330 core
-out vec4 FragColor;
-void main(){
-    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
-} )";
-	auto temp2 = fragmentShaderSrc.c_str();
-
-	unsigned int fragmentShader;
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-	glShaderSource(fragmentShader, 1, &temp2, NULL);
-	glCompileShader(fragmentShader);
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if(!success) {
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-	/*glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-	std::cout << infoLog << std::endl;*/
-
-	glUseProgram(shaderProgram);
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader); 
-	
-	unsigned int VBO;
-	glGenBuffers(1, &VBO);
-
-	unsigned int VAO;
-	glGenVertexArrays(1, &VAO);
-
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	////
+	std::string shaderName = ShaderProgram::CreateProgram("default_program", "res/shaders/vertex.vert", "res/shaders/fragment.frag");
+	ShaderProgram::UseProgram(shaderName);
 
 	// Render loop
 	Debug::print("ENGINE::Starting engine loop");
@@ -167,7 +142,7 @@ void main(){
 		// Input
 
 		//Update
-		//SceneManager::updateCurrentScene();
+		SceneManager::updateCurrentScene();
 
 		//AI
 
@@ -192,17 +167,13 @@ void main(){
 
 		SceneManager::renderCurrentScene();
 
-		glUseProgram(shaderProgram);
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData()); // Draw GUI after scene rendering
 
 		//Update screen
 		window.update();
 	}
 
-	glDeleteProgram(shaderProgram);
+	ShaderProgram::DeleteProgram(shaderName);
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
@@ -210,4 +181,6 @@ void main(){
 
 	window.destroy();
 	glfwTerminate();
+	std::cout << "Press [ENTER] to exit...";
+	std::cin.get();
 }

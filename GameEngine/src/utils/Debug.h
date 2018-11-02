@@ -10,6 +10,7 @@ public:
 	static void callDebugRenderFuncs();
 
 	static void print(const std::string& _output);
+	static void checkGlError();
 
 	static void registerDebugRenderFunc(const std::function<void()>& _renderFunc);
 	

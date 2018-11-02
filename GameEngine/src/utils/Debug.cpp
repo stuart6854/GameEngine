@@ -16,6 +16,24 @@ void Debug::print(const std::string& _output) {
 	std::cout << _output.c_str() << std::endl;
 }
 
+void Debug::checkGlError() {
+	GLenum err(glGetError());
+
+	while(err != GL_NO_ERROR) {
+		std::string error;
+
+		switch(err) {
+			case GL_INVALID_OPERATION:      error = "INVALID_OPERATION";      break;
+			case GL_INVALID_ENUM:           error = "INVALID_ENUM";           break;
+			case GL_INVALID_VALUE:          error = "INVALID_VALUE";          break;
+			case GL_OUT_OF_MEMORY:          error = "OUT_OF_MEMORY";          break;
+			case GL_INVALID_FRAMEBUFFER_OPERATION:  error = "INVALID_FRAMEBUFFER_OPERATION";  break;
+		}
+		std::cout << "[ERROR] GL_" << error.c_str() << std::endl;
+		err = glGetError();
+	}
+}
+
 void Debug::registerDebugRenderFunc(const std::function<void()>& _renderFunc) {
 	debugRenderFuncs_.push_back(_renderFunc);
 }
@@ -25,20 +43,21 @@ void Debug::glDebugMessageCallback(const GLenum _source, const GLenum _type, GLu
 		return;
 
 	std::stringstream output;
+	output << "[OPENGL]";
 
 	//Message Severity
 	switch (_severity) {
 		case GL_DEBUG_SEVERITY_NOTIFICATION:
-			output << "[OPENGL][NOTIFICATION]";
+			output << "[NOTIFICATION]";
 			break;
 		case GL_DEBUG_SEVERITY_LOW:
-			output << "[OPENGL][SEVERITY_LOW]";
+			output << "[SEVERITY_LOW]";
 			break;
 		case GL_DEBUG_SEVERITY_MEDIUM:
-			output << "[OPENGL][SEVERITY_MED]";
+			output << "[SEVERITY_MED]";
 			break;
 		case GL_DEBUG_SEVERITY_HIGH:
-			output << "[OPENGL][SEVERITY_HIGH]";
+			output << "[SEVERITY_HIGH]";
 			break;
 	}
 
@@ -95,7 +114,7 @@ void Debug::glDebugMessageCallback(const GLenum _source, const GLenum _type, GLu
 			break;
 	}
 
-	output << _message << "\n";
-
+	output << " " << _message << "\n";
+	
 	print(output.str());
 }

@@ -21,11 +21,14 @@
   <ItemGroup>
     <ClCompile Include="example\main.cpp" />
     <ClCompile Include="example\MyScene.cpp" />
+    <ClCompile Include="src\maths\Mat4.cpp" />
     <ClCompile Include="src\architecture\Component.cpp" />
     <ClCompile Include="src\architecture\ComponentManager.cpp" />
     <ClCompile Include="src\architecture\ECS.cpp" />
     <ClCompile Include="src\architecture\EntityManager.cpp" />
     <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\graphics\Mesh.cpp" />
+    <ClCompile Include="src\graphics\ShaderProgramm.cpp" />
     <ClCompile Include="src\imgui.cpp" />
     <ClCompile Include="src\imgui_demo.cpp" />
     <ClCompile Include="src\imgui_draw.cpp" />
@@ -43,7 +46,11 @@
     <ClCompile Include="src\maths\Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\maths\Mat4.h" />
+    <ClInclude Include="src\graphics\Color.h" />
     <ClInclude Include="example\MyScene.h" />
+    <ClInclude Include="src\graphics\ShaderProgram.h" />
+    <ClInclude Include="src\utils\ResourceManager.h" />
     <ClInclude Include="src\utils\IDebugRenderable.h" />
     <ClInclude Include="includes\glad\glad.h" />
     <ClInclude Include="includes\GLFW\glfw3.h" />
@@ -79,13 +86,13 @@
     <ClInclude Include="src\utils\Time.h" />
     <ClInclude Include="src\maths\Vec3.h" />
     <ClInclude Include="src\maths\Vec2.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\TestImage.png" />
+    <ClInclude Include="src\utils\TextAsset.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
     <None Include="libs\glfw3.dll" />
+    <None Include="res\shaders\fragment.frag" />
+    <None Include="res\shaders\vertex.vert" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="libs\glfw3.lib" />

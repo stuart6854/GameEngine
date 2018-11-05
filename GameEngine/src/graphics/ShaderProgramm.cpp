@@ -76,3 +76,9 @@ void ShaderProgram::DeleteProgram(const std::string _programName) {
 
 	glDeleteProgram(programId);
 }
+
+void ShaderProgram::setUniform(std::string _programName, std::string _uniformName, Mat4 _matrix) {
+	const auto programId = shaderPrograms_[_programName];
+	const auto location = glGetUniformLocation(programId, _uniformName.c_str());
+	glUniformMatrix4fv(location, 1, GL_TRUE, &_matrix.m11);
+}

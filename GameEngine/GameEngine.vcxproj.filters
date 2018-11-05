@@ -215,6 +215,9 @@
     <ClInclude Include="src\maths\Mat4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\architecture\components\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />

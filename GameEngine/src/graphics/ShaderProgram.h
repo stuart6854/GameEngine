@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include "../utils/TextAsset.h"
+#include "../maths/Mat4.h"
 
 class ShaderProgram {
 
@@ -13,6 +14,8 @@ public:
 
 	static void UseProgram(const std::string _programName);
 	static void DeleteProgram(const std::string _programName);
+
+	static void setUniform(std::string _programName, std::string _uniformName, Mat4 _matrix);
 
 };
 

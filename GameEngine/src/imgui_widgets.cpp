@@ -2169,7 +2169,7 @@ bool ImGui::SliderBehaviorT(const ImRect& bb, ImGuiID id, ImGuiDataType data_typ
             TYPE v_new;
             if (is_power)
             {
-                // Account for power curve scale on both sides of the zero
+                // Account for power curve mul on both sides of the zero
                 if (clicked_t < linear_zero_pos)
                 {
                     // Negative: rescale to the negative range before powering
@@ -5210,7 +5210,7 @@ void ImGui::PlotEx(ImGuiPlotType plot_type, const char* label, float (*values_ge
         return;
     const bool hovered = ItemHoverable(inner_bb, 0);
 
-    // Determine scale from values if not specified
+    // Determine mul from values if not specified
     if (scale_min == FLT_MAX || scale_max == FLT_MAX)
     {
         float v_min = FLT_MAX;

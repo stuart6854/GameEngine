@@ -72,6 +72,18 @@ void Window::showFps(const bool _showFps) {
 	setTitle(title_);
 }
 
+float Window::getWidth() {
+	return width_;
+}
+
+float Window::getHeight() {
+	return height_;
+}
+
+float Window::getAspectRatio() {
+	return (width_ / height_);
+}
+
 bool Window::shouldClose() {
 	return glfwWindowShouldClose(window_);
 }

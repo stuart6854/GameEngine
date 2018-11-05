@@ -46,6 +46,7 @@
     <ClCompile Include="src\maths\Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\architecture\components\Camera.h" />
     <ClInclude Include="src\maths\Mat4.h" />
     <ClInclude Include="src\graphics\Color.h" />
     <ClInclude Include="example\MyScene.h" />

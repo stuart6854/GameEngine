@@ -15,6 +15,10 @@ public:
 	void setTitle(const std::string& _title);
 	void showFps(bool _showFps);
 
+	float getWidth();
+	float getHeight();
+	float getAspectRatio();
+
 	bool shouldClose();
 
 	GLFWwindow* getGLFWWindow() { return window_; }

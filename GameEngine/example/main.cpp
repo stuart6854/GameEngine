@@ -2,6 +2,8 @@
 #include <iostream>
 #include "../src/core/SceneManager.h"
 #include "../src/core/GameEngine.h"
+#include "../src/maths/Math.h"
+#include "../src/maths/Mat4.h"
 
 int main() {
 	//Register Custom Components
@@ -16,6 +18,9 @@ int main() {
 		return -1;
 	}
 	engine_.start();
+
+	std::cout << "Press [ENTER] to exit...";
+	std::cin.get();
 
 	return 0;
 }

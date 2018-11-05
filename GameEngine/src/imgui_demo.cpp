@@ -2600,7 +2600,7 @@ void ImGui::ShowStyleEditor(ImGuiStyle* ref)
                 ImGui::PushFont(font);
                 ImGui::Text("The quick brown fox jumps over the lazy dog");
                 ImGui::PopFont();
-                ImGui::DragFloat("Font scale", &font->Scale, 0.005f, 0.3f, 2.0f, "%.1f");   // Scale only this font
+                ImGui::DragFloat("Font mul", &font->Scale, 0.005f, 0.3f, 2.0f, "%.1f");   // Scale only this font
                 ImGui::SameLine(); ShowHelpMarker("Note than the default embedded font is NOT meant to be scaled.\n\nFont are currently rendered into bitmaps at a given size at the time of building the atlas. You may oversample them to get some flexibility with scaling. You can also render at multiple sizes and select which one to use at runtime.\n\n(Glimmer of hope: the atlas system should hopefully be rewritten in the future to make scaling more natural and automatic.)");
                 ImGui::InputFloat("Font offset", &font->DisplayOffset.y, 1, 1, "%.0f");
                 ImGui::Text("Ascent: %f, Descent: %f, Height: %f", font->Ascent, font->Descent, font->Ascent - font->Descent);
@@ -2653,8 +2653,8 @@ void ImGui::ShowStyleEditor(ImGuiStyle* ref)
             ImGui::PopID();
         }
         static float window_scale = 1.0f;
-        ImGui::DragFloat("this window scale", &window_scale, 0.005f, 0.3f, 2.0f, "%.1f");              // scale only this window
-        ImGui::DragFloat("global scale", &ImGui::GetIO().FontGlobalScale, 0.005f, 0.3f, 2.0f, "%.1f"); // scale everything
+        ImGui::DragFloat("this window mul", &window_scale, 0.005f, 0.3f, 2.0f, "%.1f");              // mul only this window
+        ImGui::DragFloat("global mul", &ImGui::GetIO().FontGlobalScale, 0.005f, 0.3f, 2.0f, "%.1f"); // mul everything
         ImGui::PopItemWidth();
         ImGui::SetWindowFontScale(window_scale);
         ImGui::TreePop();

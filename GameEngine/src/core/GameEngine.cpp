@@ -13,9 +13,8 @@
 #include "../architecture/components/Transform.h"
 #include "../architecture/components/Movement.h"
 #include "../architecture/components/RenderData.h"
-#include "../utils/TextAsset.h"
 #include "../graphics/ShaderProgram.h"
-#include "../maths/Mat4.h"
+#include "../architecture/components/Camera.h"
 Window window;
 
 bool GameEngine::isValidStart() {
@@ -61,6 +60,7 @@ bool GameEngine::initialise() {
 	Component::RegisterComponentType<Transform>();
 	Component::RegisterComponentType<Movement>();
 	Component::RegisterComponentType<RenderData>();
+	Component::RegisterComponentType<Camera>();
 
 
 	initialised_ = true;
@@ -68,51 +68,6 @@ bool GameEngine::initialise() {
 }
 
 void GameEngine::start(){
-	Mat4 a;
-	a.m11 = 1;
-	a.m12 = 2;
-	a.m13 = 3;
-	a.m14 = 4;
-
-	a.m21 = 5;
-	a.m22 = 6;
-	a.m23 = 7;
-	a.m24 = 8;
-
-	a.m31 = 9;
-	a.m32 = 10;
-	a.m33 = 11;
-	a.m34 = 12;
-
-	a.m41 = 13;
-	a.m42 = 14;
-	a.m43 = 15;
-	a.m44 = 16;
-
-	Mat4 b;
-	b.m11 = 16;
-	b.m12 = 15;
-	b.m13 = 14;
-	b.m14 = 13;
-
-	b.m21 = 12;
-	b.m22 = 11;
-	b.m23 = 10;
-	b.m24 = 9;
-
-	b.m31 = 8;
-	b.m32 = 7;
-	b.m33 = 6;
-	b.m34 = 5;
-
-	b.m41 = 4;
-	b.m42 = 3;
-	b.m43 = 2;
-	b.m44 = 1;
-
-	a.mul(b);
-	std::cout << a << std::endl;
-
 	if(!initialised_) {
 		Debug::print("ENGINE :: Cannot start engine without initialising!");
 		glfwTerminate();
@@ -181,6 +136,4 @@ void GameEngine::start(){
 
 	window.destroy();
 	glfwTerminate();
-	std::cout << "Press [ENTER] to exit...";
-	std::cin.get();
 }
